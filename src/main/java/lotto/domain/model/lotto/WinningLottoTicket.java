@@ -5,15 +5,21 @@ import java.util.Set;
 
 public class WinningLottoTicket extends LottoTicket {
 
-    private final BonusNumber bonusNumber;
+    private final LottoNumber bonusNumber;
 
-    public WinningLottoTicket(final Set<LottoNumber> winningNumbers, final BonusNumber bonusNumber) {
-        super(winningNumbers);
-        bonusNumber.validateNotInWinningNumbers(winningNumbers);
+    public WinningLottoTicket(final Set<LottoNumber> winingNumbers, final LottoNumber bonusNumber) {
+        super(winingNumbers);
+        validateBonusNumber(winingNumbers, bonusNumber);
         this.bonusNumber = bonusNumber;
     }
 
-    public BonusNumber getBonusNumber() {
+    private void validateBonusNumber(Set<LottoNumber> winningNumbers, LottoNumber bonusNumber) {
+        if (winningNumbers.contains(bonusNumber)) {
+            throw new IllegalArgumentException("보너스 번호는 당첨 번호와 중복될 수 없습니다.");
+        }
+    }
+
+    public LottoNumber getBonusNumber() {
         return bonusNumber;
     }
 

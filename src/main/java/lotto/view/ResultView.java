@@ -1,7 +1,6 @@
 package lotto.view;
 
 import lotto.domain.model.game.LottoGameResult;
-import lotto.domain.model.lotto.PurchaseAmount;
 import lotto.domain.model.lotto.LottoTicket;
 import lotto.domain.model.game.Rank;
 
@@ -17,7 +16,7 @@ public class ResultView {
         tickets.forEach(System.out::println);
     }
 
-    public void printResult(final PurchaseAmount purchaseAmount, final LottoGameResult result) {
+    public void printResult(final int purchaseAmount, final LottoGameResult result) {
         printHeader();
         printWinningStatistics(result);
         printYield(purchaseAmount, result);
@@ -32,8 +31,8 @@ public class ResultView {
         Map<Rank, Integer> matchCounts = result.getRankCountMap();
 
         Arrays.stream(Rank.values())
-                .filter(rank -> rank.getWinningPrize().getAmount() > 0)
-                .sorted(Comparator.comparingInt(rank -> rank.getWinningPrize().getAmount()))
+                .filter(rank -> rank.getWinningPrize() > 0)
+                .sorted(Comparator.comparingInt(Rank::getWinningPrize))
                 .forEach(rank -> printRankStatistics(rank, matchCounts.getOrDefault(rank, 0)));
     }
 
@@ -42,15 +41,14 @@ public class ResultView {
         String RESULT_MESSAGE_WITH_BONUS_BALL_FORMAT = "%d개 일치, 보너스 볼 일치(%s원) - %d개%n";
 
         System.out.printf(
-                rank.getBonusMatch() != null && rank.getBonusMatch().matches() ? 
-                    RESULT_MESSAGE_WITH_BONUS_BALL_FORMAT : RESULT_MESSAGE_FORMAT,
-                rank.getMatchCriteria().getValue(),
-                rank.getWinningPrize().getAmount(),
+                Boolean.TRUE.equals(rank.isBonusMatch()) ? RESULT_MESSAGE_WITH_BONUS_BALL_FORMAT : RESULT_MESSAGE_FORMAT,
+                rank.getMatchCriteria(),
+                rank.getWinningPrize(),
                 matchCounts
         );
     }
 
-    private void printYield(final PurchaseAmount purchaseAmount, final LottoGameResult result) {
-        System.out.printf("총 수익률은 %.2f입니다.%n", result.getYield(purchaseAmount).getValue());
+    private void printYield(final int purchaseAmount, final LottoGameResult result) {
+        System.out.printf("총 수익률은 %.2f입니다.%n", result.getYield(purchaseAmount));
     }
 }

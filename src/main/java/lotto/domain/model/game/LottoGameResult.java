@@ -1,7 +1,5 @@
 package lotto.domain.model.game;
 
-import lotto.domain.model.lotto.PurchaseAmount;
-
 import java.util.*;
 
 public class LottoGameResult {
@@ -16,14 +14,14 @@ public class LottoGameResult {
         return Collections.unmodifiableMap(rankCountMap);
     }
 
-    public Prize getTotalPrize() {
+    public int getTotalPrize() {
         return Arrays.stream(Rank.values())
-                .map(rank -> rank.getWinningPrize().multiply(rankCountMap.getOrDefault(rank, 0)))
-                .reduce(Prize.zero(), Prize::add);
+                .map(rank -> rankCountMap.getOrDefault(rank, 0) * rank.getWinningPrize())
+                .reduce(0, Integer::sum);
     }
 
-    public Yield getYield(final PurchaseAmount purchaseAmount) {
-        return new Yield(getTotalPrize(), purchaseAmount);
+    public double getYield(final int purchaseAmount) {
+        return (double) getTotalPrize() / purchaseAmount;
     }
 
 }

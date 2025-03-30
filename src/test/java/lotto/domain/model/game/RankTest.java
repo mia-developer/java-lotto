@@ -1,6 +1,7 @@
 package lotto.domain.model.game;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
@@ -20,10 +21,7 @@ class RankTest {
             "1, false, MISS",
             "0, false, MISS"
     })
-    void determineRank(final int matchCountValue, final boolean bonusMatchValue, final Rank expectedRank) {
-        MatchCount matchCount = new MatchCount(matchCountValue);
-        BonusMatch bonusMatch = BonusMatch.from(bonusMatchValue);
-        
+    void determineRank(final int matchCount, final boolean bonusMatch, final Rank expectedRank) {
         Rank rank = Rank.of(matchCount, bonusMatch);
 
         assertThat(rank).isEqualTo(expectedRank);
@@ -40,10 +38,7 @@ class RankTest {
             "1, false, MISS",
             "0, false, MISS"
     })
-    void determineRankWithoutBonusMatch(int matchCountValue, boolean bonusMatchValue, Rank expectedRank) {
-        MatchCount matchCount = new MatchCount(matchCountValue);
-        BonusMatch bonusMatch = BonusMatch.from(bonusMatchValue);
-        
+    void determineRankWithoutBonusMatch(int matchCount, boolean bonusMatch, Rank expectedRank) {
         Rank rank = Rank.of(matchCount, bonusMatch);
 
         assertThat(rank).isEqualTo(expectedRank);
@@ -60,10 +55,7 @@ class RankTest {
             "1, true, MISS",
             "0, true, MISS"
     })
-    void determineRankWithBonusMatch(int matchCountValue, boolean bonusMatchValue, Rank expectedRank) {
-        MatchCount matchCount = new MatchCount(matchCountValue);
-        BonusMatch bonusMatch = BonusMatch.from(bonusMatchValue);
-        
+    void determineRankWithBonusMatch(int matchCount, boolean bonusMatch, Rank expectedRank) {
         Rank rank = Rank.of(matchCount, bonusMatch);
 
         assertThat(rank).isEqualTo(expectedRank);

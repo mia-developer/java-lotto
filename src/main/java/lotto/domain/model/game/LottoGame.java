@@ -25,9 +25,9 @@ public class LottoGame {
     }
 
     private Rank determineRank(final LottoTicket lottoTicket) {
-        MatchCount matchCount = lottoTicket.countMatchingNumbers(winningLottoTicket);
-        BonusMatch bonusMatch = BonusMatch.of(lottoTicket, winningLottoTicket);
+        int matchCount = lottoTicket.countMatchingNumbers(winningLottoTicket);
+        boolean hasBonusMatch = lottoTicket.contains(winningLottoTicket.getBonusNumber());
 
-        return Rank.of(matchCount, bonusMatch);
+        return Rank.of(matchCount, hasBonusMatch);
     }
 }
