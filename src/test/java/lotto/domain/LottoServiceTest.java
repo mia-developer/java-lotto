@@ -3,7 +3,6 @@ package lotto.domain;
 import lotto.domain.model.game.LottoGameResult;
 import lotto.domain.model.lotto.PurchaseAmount;
 import lotto.domain.model.game.Rank;
-import lotto.domain.model.game.Yield;
 import lotto.domain.model.lotto.BonusNumber;
 import lotto.domain.model.lotto.LottoNumber;
 import lotto.domain.model.lotto.LottoTicket;
@@ -27,10 +26,10 @@ class LottoServiceTest {
 
     @DisplayName("로또 티켓 구매 테스트")
     @Test
-    void purchaseTickets() {
+    void purchaseAutoTickets() {
         PurchaseAmount purchaseAmount = new PurchaseAmount(5000);
 
-        List<LottoTicket> tickets = lottoService.purchaseTickets(purchaseAmount);
+        List<LottoTicket> tickets = lottoService.purchaseAutoTickets(purchaseAmount);
 
         assertThat(tickets).hasSize(5);
         for (LottoTicket ticket : tickets) {
@@ -42,7 +41,7 @@ class LottoServiceTest {
     @ParameterizedTest
     @ValueSource(ints = {1000, 2000, 5000, 10000})
     void calculateTicketCount(int purchaseAmount) {
-        List<LottoTicket> tickets = lottoService.purchaseTickets(new PurchaseAmount(purchaseAmount));
+        List<LottoTicket> tickets = lottoService.purchaseAutoTickets(new PurchaseAmount(purchaseAmount));
 
         int expectedCount = purchaseAmount / 1000;
         assertThat(tickets).hasSize(expectedCount);
@@ -52,7 +51,7 @@ class LottoServiceTest {
     @ParameterizedTest
     @ValueSource(ints = {0, -1000})
     void validateInvalidPurchaseAmount(int invalidAmount) {
-        assertThatThrownBy(() -> lottoService.purchaseTickets(new PurchaseAmount(invalidAmount)))
+        assertThatThrownBy(() -> lottoService.purchaseAutoTickets(new PurchaseAmount(invalidAmount)))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("구입 금액은 0보다 커야 합니다");
     }
